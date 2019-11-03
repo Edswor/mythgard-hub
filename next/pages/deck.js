@@ -1,6 +1,5 @@
 import { withRouter } from 'next/router';
-import Head from 'next/head';
-import { useQuery } from 'react-apollo-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import ErrorMessage from '../components/error-message';
 import Deck from '../components/deck';
 import Layout from '../components/layout';
@@ -47,35 +46,6 @@ export default withRouter(({ router }) => {
 
   return (
     <Layout title={title} desc={description}>
-      <Head>
-        <meta key="og:title" property="og:title" content={title} />
-        <meta
-          key="og:site_name"
-          property="og:site_name"
-          content="Mythgard Hub"
-        />
-        <meta
-          key="og:description"
-          property="og:description"
-          content={description}
-        />
-        <meta
-          key="og:url"
-          property="og:url"
-          content={`https://mythgardhub.com${router.asPath}`}
-        />
-        <meta key="og:type" property="og:type" content="article" />
-        <meta
-          key="og:image"
-          property="og:image"
-          content="https://cdn.mythgardhub.com/identity/og-image.jpg"
-        />
-        <meta
-          key="og:image:type"
-          property="og:image:type"
-          content="image/png"
-        />
-      </Head>
       <PageBanner image={PageBanner.IMG_DECKS}>Decks</PageBanner>
       <Deck deck={data.deck} />
     </Layout>

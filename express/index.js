@@ -3,7 +3,7 @@ const { postgraphile } = require('postgraphile');
 const PgSimplifyInflectorPlugin = require('@graphile-contrib/pg-simplify-inflector');
 const ConnectionFilterPlugin = require('postgraphile-plugin-connection-filter');
 const compression = require('compression');
-const helmet = require('helmet');
+//const helmet = require('helmet');
 const {
   hashQuery,
   allowedQueryHashes,
@@ -13,7 +13,7 @@ const {
 const app = express();
 
 app.use(compression());
-app.use(helmet());
+//app.use(helmet());
 
 app.use(express.json());
 app.use('/graphql', async (req, res, next) => {

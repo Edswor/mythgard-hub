@@ -7,11 +7,49 @@ import { ThemeContext } from './theme-context';
 import Footer from './footer';
 
 const tabletMaxWidth = 925;
+const cdn = process.env.MG_CDN;
 
-function Layout({ title, desc, children }) {
+function Layout({ title, desc, image, children }) {
   const theme = useContext(ThemeContext);
   return (
     <>
+      <Head>
+        <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          key="viewport"
+          content="width=device-width, initial-scale=1"
+        />
+
+        <title>{title}</title>
+        <meta name="description" key="desc" content={desc} />
+
+        <meta key="og:title" property="og:title" content={title} />
+        <meta
+          key="og:site_name"
+          property="og:site_name"
+          content="Mythgard Hub"
+        />
+        <meta key="og:description" property="og:description" content={desc} />
+        <meta
+          key="og:url"
+          property="og:url"
+          content={`https://mythgardhub.com`}
+        />
+        <meta key="og:type" property="og:type" content="article" />
+        <meta key="og:image" property="og:image" content={image} />
+        <meta
+          key="og:image:type"
+          property="og:image:type"
+          content="image/png"
+        />
+
+        <link
+          href="https://fonts.googleapis.com/css?family=Exo+2:300,300i,400,400i,600,600i,700,700i&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
       <WelcomeBanner />
       <div className="container">
         <style jsx>{`
@@ -76,14 +114,6 @@ function Layout({ title, desc, children }) {
             }
           }
         `}</style>
-        <Head>
-          <title>{title}</title>
-          <meta name="description" key="desc" content={desc} />
-          <link
-            href="https://fonts.googleapis.com/css?family=Exo+2:300,300i,400,400i,600,600i,700,700i&display=swap"
-            rel="stylesheet"
-          />
-        </Head>
         <Header />
         {children}
         <style jsx global>{`
@@ -394,12 +424,14 @@ function Layout({ title, desc, children }) {
 
 Layout.defaultProps = {
   title: 'Mythgard Hub',
-  desc: 'Your hub for Mythgard decks, cards, tournaments, and media'
+  desc: 'Your hub for Mythgard decks, cards, tournaments, and media',
+  image: `${cdn}/mgh/og-image.jpg`
 };
 
 Layout.propTypes = {
   title: PropTypes.string,
   desc: PropTypes.string,
+  image: PropTypes.string,
   children: PropTypes.any
 };
 
