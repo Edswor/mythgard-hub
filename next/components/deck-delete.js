@@ -10,14 +10,14 @@ function DeckDelete({ deck, className }) {
   const client = useApolloClient();
   const { user } = useContext(UserContext);
   const [message, setMessage] = useState(null);
-  const handleClick = useCallback(async () => {
+  const handleClick = useCallback(async apolloClient => {
     const msg = `Are you sure? This action cannot be undone.`;
     // Cypress will auto-confirm these dialogues
     if (window.confirm(msg)) {
       clearTimeout(messageTimeoutHandle);
       let resp;
       try {
-        resp = await deleteDeck(client, deck.id);
+        resp = await deleteDeck(apolloClient, deck.id);
       } catch (err) {
         if (process.env.NODE_ENV === 'development') {
           console.error(err);
@@ -40,7 +40,9 @@ function DeckDelete({ deck, className }) {
           margin-bottom: 10px;
         }
       `}</style>
-      <button onClick={handleClick}>Delete</button>
+      <ApolloConsumer>
+        {client => <button onClick={handleClick(client)}>Delete</button>}
+      </ApolloConsumer>
       {message && <span>{message}</span>}
     </div>
   );

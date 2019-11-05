@@ -179,10 +179,10 @@ router.get('/user', async (req, res) => {
   try {
     const token = jwt.verify(signedToken, process.env.JWT_SECRET);
     user = await getUserByEmail(token.email);
+    res.json(user);
   } catch (err) {
     res.json(null);
   }
-  res.json(user);
 });
 
 router.get('/user/:token', async (req, res) => {
