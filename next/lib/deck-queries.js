@@ -9,6 +9,8 @@ const deckPreviewsFragment = `
       factions
       essenceCost
       votes
+      deckArchetype
+      deckType
       deck{
         id
         author {
@@ -73,6 +75,8 @@ export const getDeckSearchVars = vars => {
     offset: vars.offset,
     deckName: vars.deckName,
     authorName: vars.authorName,
+    archetype: vars.archetype,
+    type: vars.type,
     sortBy: vars.sortBy,
     deckModified: daysAgoToGraphQLTimestamp(vars.updatedTime),
     ...cardIdsToVars(vars.cardIds),
@@ -98,6 +102,8 @@ const deckSearchQuery = gql`
       $faction5: Int
       $faction6: Int
       $numFactions: Int
+      $archetype: [Deckarchetype]
+      $type: [Decktype]
       $first: Int
       $offset: Int
       $sortBy: String
@@ -118,6 +124,8 @@ const deckSearchQuery = gql`
         faction5: $faction5
         faction6: $faction6
         numfactions: $numFactions
+        archetypefilter: $archetype
+        typefilter: $type
         first: $first
         offset: $offset
         sortby: $sortBy
@@ -139,8 +147,9 @@ const deckSearchQuery = gql`
   `;
 
 export const useDeckSearchQuery = (vars, onCompleted) => {
+  const variables = getDeckSearchVars(vars);
   return useQuery(deckSearchQuery, {
-    variables: getDeckSearchVars(vars),
+    variables,
     onCompleted
   });
 };
@@ -221,6 +230,7 @@ export const singleDeckQuery = gql`
     deck(id: $id) {
       id
       name
+      description
       author {
         id
         username
@@ -290,3 +300,15 @@ export const topDeckPreviewsQuery = gql`
 `;
 
 export const deckPreviewsToDecks = dp => dp.map(deckPreviewToDeck);
+
+export const updateDeck = gql`
+  mutation updateDeck($deckId: Int!, $deckDesc: String, $deckName: String) {
+    updateDeck(
+      input: { id: $deckId, patch: { description: $deckDesc, name: $deckName } }
+    ) {
+      deck {
+        id
+      }
+    }
+  }
+`;
